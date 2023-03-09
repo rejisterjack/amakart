@@ -1,5 +1,6 @@
-import "./styles.css";
+import "./index.scss";
 import React from "react";
+import ListItem from "./components/Products/ListItems/ListItem";
 export default function App() {
 
   // react components 
@@ -12,7 +13,7 @@ export default function App() {
 
   return (
     <>
-    
+    <ListItem />
     </>
   )
 }
