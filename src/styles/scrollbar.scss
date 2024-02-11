@@ -1,0 +1,35 @@
+body {
+  /* Webkit (Chrome, Safari) */
+  &::-webkit-scrollbar {
+    width: 6px; /* width of the scrollbar */
+    height: 6px;
+  }
+
+  /* Firefox */
+  &::-moz-scrollbar {
+    width: 6px; /* width of the scrollbar */
+    height: 6px;
+  }
+
+  /* Internet Explorer/Edge */
+  &::-ms-scrollbar {
+    width: 6px; /* width of the scrollbar */
+    height: 6px;
+  }
+
+  /* Track styles */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1; /* color of the scrollbar track */
+  }
+
+  /* Handle styles */
+  &::-webkit-scrollbar-thumb {
+    background: #888; /* color of the scrollbar handle */
+    border-radius: 3px; /* roundness of the scrollbar handle */
+  }
+
+  /* Handle hover styles */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555; /* color of the scrollbar handle on hover */
+  }
+}

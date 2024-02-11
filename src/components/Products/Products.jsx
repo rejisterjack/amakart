@@ -1,20 +1,28 @@
-import Data from "../../../public/data/products.json"
+import { useEffect, useState } from "react"
+// import Data from "../../../public/data/products.json"
 import ListItem from "./ListItems/ListItem"
+import axios from "axios"
 
 const Products = () => {
+  const [items, setItems] = useState([])
+  useEffect(() => {
+    async function fetchItems() {
+      try {
+        const response = await axios
+          .get(`${import.meta.env.VITE_BASE_URL}/items.json`)
+          .then((res) => res.data)
+        setItems(response)
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchItems()
+  }, [])
   return (
     <div className="product-list">
-      <div className="form">
-        <form action="">
-          <h2>Item Card Details</h2>
-          <div className="input-field">
-            <label htmlFor="title">Title</label>
-            <input type="text" placeholder="Enter Title" />
-          </div>
-        </form>
-      </div>
       <div className="product-list--wrapper">
-        {Data.items.map((item, index) => (
+        {items.map((item, index) => (
           <ListItem key={index} data={item} />
         ))}
       </div>
