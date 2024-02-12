@@ -3,7 +3,7 @@ import AddToCartIcon from "../../../assets/icons/add_cart.svg"
 import { useState } from "react"
 import Modal from "../../UI/Modal"
 
-const ListItem = ({ data, handleTitleUpdate }) => {
+const ListItem = ({ data, handleTitleUpdate, addItem, removeItem }) => {
   const [count, setCount] = useState(0)
   const [showModal, setShowModal] = useState(false)
 
@@ -13,12 +13,16 @@ const ListItem = ({ data, handleTitleUpdate }) => {
       return
     }
     setCount((prevCount) => prevCount + 1)
+    addItem(data.id)
   }
 
   const handleDecrement = (event) => {
     event.stopPropagation()
     if (count <= 0) {
       return
+    }
+    if (count === 1) {
+      removeItem(data.id)
     }
     setCount((prevCount) => prevCount - 1)
   }

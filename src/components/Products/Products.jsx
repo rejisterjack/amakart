@@ -4,9 +4,27 @@ import ListItem from "./ListItems/ListItem"
 import axios from "axios"
 import Loader from "../UI/Loader"
 
-const Products = () => {
+const Products = ({ handleAddItem, handleRemoveItem }) => {
   const [items, setItems] = useState([])
   const [loader, setLoader] = useState(true)
+  const [presentItems, setPresentItems] = useState([])
+
+  const addItem = (id) => {
+    if (presentItems.indexOf(id) > -1) {
+      return
+    }
+    setPresentItems([...presentItems, id])
+    handleAddItem()
+  }
+  const removeItem = (id) => {
+    let index = presentItems.indexOf(id)
+    if (index > -1) {
+      let items = [...presentItems]
+      items.splice(index, 1)
+      setPresentItems([...items])
+      handleRemoveItem()
+    }
+  }
 
   useEffect(() => {
     async function fetchItems() {
@@ -49,6 +67,8 @@ const Products = () => {
             <ListItem
               key={index}
               data={item}
+              addItem={addItem}
+              removeItem={removeItem}
               handleTitleUpdate={handleTitleUpdate}
             />
           ))}
