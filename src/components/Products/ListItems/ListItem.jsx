@@ -3,7 +3,8 @@ import AddToCartIcon from "../../../assets/icons/add_cart.svg"
 import { useState } from "react"
 import Modal from "../../UI/Modal"
 
-const ListItem = ({ data, handleTitleUpdate, addItem, removeItem }) => {
+// const ListItem = ({ data, handleTitleUpdate, addItem, removeItem }) => {
+const ListItem = ({ data, addItem, removeItem }) => {
   const [count, setCount] = useState(0)
   const [showModal, setShowModal] = useState(false)
 
@@ -119,7 +120,9 @@ ListItem.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
   }).isRequired,
-  handleTitleUpdate: PropTypes.func.isRequired,
+  handleTitleUpdate: PropTypes.func,
+  addItem: PropTypes.func.isRequired,
+  removeItem: PropTypes.func.isRequired,
 }
 
 export default ListItem

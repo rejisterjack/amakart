@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom"
-
+import PropTypes from "prop-types"
 export const Backdrop = ({ onClose }) => {
   const handleClick = () => {
     if (onClose) {
@@ -11,6 +11,10 @@ export const Backdrop = ({ onClose }) => {
       <div className="loader-overlay" onClick={handleClick}></div>
     </>
   )
+}
+
+Backdrop.propTypes = {
+  onClose: PropTypes.func.isRequired,
 }
 
 const Loader = () => {

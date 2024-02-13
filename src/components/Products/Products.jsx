@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import PropTypes from "prop-types"
 // import Data from "../../../public/data/products.json"
 import ListItem from "./ListItems/ListItem"
 import axios from "axios"
@@ -79,5 +80,10 @@ const Products = ({ handleAddItem, handleRemoveItem }) => {
     </>
   )
 }
+
+Products.propTypes = {
+  handleAddItem: PropTypes.func.isRequired,
+  handleRemoveItem: PropTypes.func.isRequired,
+};
 
 export default Products
