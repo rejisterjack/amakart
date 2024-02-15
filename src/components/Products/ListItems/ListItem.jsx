@@ -3,29 +3,17 @@ import AddToCartIcon from "../../../assets/icons/add_cart.svg"
 import { useState } from "react"
 import Modal from "../../UI/Modal"
 
-// const ListItem = ({ data, handleTitleUpdate, addItem, removeItem }) => {
 const ListItem = ({ data, addItem, removeItem }) => {
-  const [count, setCount] = useState(0)
   const [showModal, setShowModal] = useState(false)
 
   const handleIncrement = (event) => {
     event.stopPropagation()
-    if (count >= 5) {
-      return
-    }
-    setCount((prevCount) => prevCount + 1)
     addItem(data.id)
   }
 
   const handleDecrement = (event) => {
     event.stopPropagation()
-    if (count <= 0) {
-      return
-    }
-    if (count === 1) {
-      removeItem(data.id)
-    }
-    setCount((prevCount) => prevCount - 1)
+    removeItem(data.id)
   }
 
   const handleModal = () => {
@@ -48,12 +36,12 @@ const ListItem = ({ data, addItem, removeItem }) => {
           </div>
         </div>
         {/* <button onClick={() => handleTitleUpdate(data.id)}>update title</button> */}
-        {count > 0 ? (
+        {data.quantity > 0 ? (
           <div className="cart-addon">
             <button onClick={handleDecrement}>
               <span>-</span>
             </button>
-            <span className="counter">{count}</span>
+            <span className="counter">{data.quantity}</span>
             <button onClick={handleIncrement}>
               <span>+</span>
             </button>
@@ -84,12 +72,12 @@ const ListItem = ({ data, addItem, removeItem }) => {
                 </small>
               </div>
               <p>{data.description}</p>
-              {count > 0 ? (
+              {data.quantity > 0 ? (
                 <div className="cart-addon cart-addon__modal">
                   <button onClick={handleDecrement}>
                     <span>-</span>
                   </button>
-                  <span className="counter">{count}</span>
+                  <span className="counter">{data.quantity}</span>
                   <button onClick={handleIncrement}>
                     <span>+</span>
                   </button>
@@ -119,6 +107,7 @@ ListItem.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
+    quantity: PropTypes.string.isRequired,
   }).isRequired,
   handleTitleUpdate: PropTypes.func,
   addItem: PropTypes.func.isRequired,

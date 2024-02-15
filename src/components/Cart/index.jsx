@@ -1,11 +1,20 @@
 import { useState } from "react"
 import Modal from "../UI/Modal"
+import CartItem from "./CartItem"
+import OrderSuccessModal from "../UI/OrderSuccess"
 
-const Index = ({ count }) => {
+const Index = ({ count, items, handleEventQueue }) => {
   const [showModal, setShowModal] = useState(false)
+  const [orderModal, setOrderModal] = useState(false)
+
   const handleModal = () => {
     setShowModal((prevState) => !prevState)
   }
+  const handleOrderModal = () => {
+    setShowModal(false)
+    setOrderModal((prevState) => !prevState)
+  }
+
   return (
     <>
       <button onClick={handleModal}>
@@ -36,31 +45,14 @@ const Index = ({ count }) => {
             <h2>Checkout Modal</h2>
             <div className="checkout-modal_list">
               {count > 0 ? (
-                <div className="checkout-modal_list-item">
-                  <div className="img-wrap">
-                    <img
-                      src="/assets/placeholder.png"
-                      alt=""
-                      className="img-fluid"
-                    />
-                  </div>
-                  <div className="information">
-                    <div>
-                      <h4>Title of the Product</h4>
-                      <div className="pricing">
-                        <span>2000</span>
-                        <small>
-                          <strike>2500</strike>
-                        </small>
-                      </div>
-                    </div>
-                    <div className="cart-addon cart-addon__modal">
-                      <button>-</button>
-                      <span className="counter">{0}</span>
-                      <button>+</button>
-                    </div>
-                  </div>
-                </div>
+                items.map((item) => (
+                  <CartItem
+                    data={item}
+                    key={item.id}
+                    onEmitIncreaseItem={(id) => handleEventQueue(id, 1)}
+                    onEmitDecreaseItem={(id) => handleEventQueue(id, -1)}
+                  />
+                ))
               ) : (
                 <div className="empty-cart"></div>
               )}
@@ -69,14 +61,22 @@ const Index = ({ count }) => {
               <div className="checkout-modal_footer">
                 <div className="totalAmount">
                   <h4>Total Amount:</h4>
-                  <h4>2000 INR</h4>
+                  <h4>
+                    {items.reduce(
+                      (prev, curr) =>
+                        prev + curr.discountedPrice * curr.quantity,
+                      0
+                    )}{" "}
+                    INR
+                  </h4>
                 </div>
-                <button>Order Now</button>
+                <button onClick={handleOrderModal}>Order Now</button>
               </div>
             )}
           </div>
         </Modal>
       )}
+      {orderModal && <OrderSuccessModal onClose={handleOrderModal} />}
     </>
   )
 }
