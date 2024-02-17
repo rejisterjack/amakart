@@ -13,10 +13,6 @@ export const Backdrop = ({ onClose }) => {
   )
 }
 
-Backdrop.propTypes = {
-  onClose: PropTypes.func.isRequired,
-}
-
 const Loader = () => {
   return ReactDOM.createPortal(
     <>

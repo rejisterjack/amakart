@@ -2,23 +2,39 @@ import { useState } from "react"
 import Modal from "../UI/Modal"
 import CartItem from "./CartItem"
 import OrderSuccessModal from "../UI/OrderSuccess"
+import { useDispatch, useSelector } from "react-redux"
+import { addItemHandler, removeItemHandler } from "../../actions"
 
-const Index = ({ count, items, handleEventQueue }) => {
+const Index = () => {
   const [showModal, setShowModal] = useState(false)
   const [orderModal, setOrderModal] = useState(false)
+  const items = useSelector((state) => state.cart.items)
+  const totalAmount = useSelector((state) => state.cart.totalAmount)
+  const dispatch = useDispatch()
 
   const handleModal = () => {
     setShowModal((prevState) => !prevState)
   }
   const handleOrderModal = () => {
     setShowModal(false)
+    dispatch({
+      type: "CLEAR_CART",
+    })
     setOrderModal((prevState) => !prevState)
+  }
+
+  const dispatchEvents = (type, item) => {
+    if (type === 1) {
+      dispatch(addItemHandler(item))
+    } else if (type === -1) {
+      dispatch(removeItemHandler(item.id))
+    }
   }
 
   return (
     <>
       <button onClick={handleModal}>
-        <span data-items={count}>Cart</span>
+        <span data-items={items.length}>Cart</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="icon icon-tabler icon-tabler-shopping-cart-plus"
@@ -44,29 +60,25 @@ const Index = ({ count, items, handleEventQueue }) => {
           <div className="checkout-modal">
             <h2>Checkout Modal</h2>
             <div className="checkout-modal_list">
-              {count > 0 ? (
+              {items.length > 0 ? (
                 items.map((item) => (
                   <CartItem
                     data={item}
+                    onEmitIncreaseItem={(item) => dispatchEvents(1, item)}
+                    onEmitDecreaseItem={(item) => dispatchEvents(-1, item)}
                     key={item.id}
-                    onEmitIncreaseItem={(id) => handleEventQueue(id, 1)}
-                    onEmitDecreaseItem={(id) => handleEventQueue(id, -1)}
                   />
                 ))
               ) : (
                 <div className="empty-cart"></div>
               )}
             </div>
-            {count > 0 && (
+            {items.length > 0 && (
               <div className="checkout-modal_footer">
                 <div className="totalAmount">
                   <h4>Total Amount:</h4>
                   <h4>
-                    {items.reduce(
-                      (prev, curr) =>
-                        prev + curr.discountedPrice * curr.quantity,
-                      0
-                    )}{" "}
+                    {totalAmount}
                     INR
                   </h4>
                 </div>

@@ -1,8 +1,10 @@
 import { createStore, applyMiddleware } from "redux"
+import { composeWithDevTools } from "redux-devtools-extension"
 import { thunk } from "redux-thunk"
+import mainReducer from "../reducers/index"
 
-const rootReducer = (state, action) => {
-  return state
-}
-
-export const store = createStore(rootReducer, {}, applyMiddleware(thunk))
+export const store = createStore(
+  mainReducer,
+  { items: [], totalAmount: 0 },
+  composeWithDevTools(applyMiddleware(thunk))
+)

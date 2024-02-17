@@ -1,19 +1,24 @@
-import PropTypes from "prop-types"
 import AddToCartIcon from "../../../assets/icons/add_cart.svg"
 import { useState } from "react"
 import Modal from "../../UI/Modal"
+import { useDispatch, useSelector } from "react-redux"
+import { addItemHandler, removeItemHandler } from "../../../actions"
 
-const ListItem = ({ data, addItem, removeItem }) => {
+const ListItem = ({ data }) => {
   const [showModal, setShowModal] = useState(false)
+  const item = useSelector((state) =>
+    state.cart.items.find((item) => item.id === data.id)
+  )
+  const dispatch = useDispatch()
 
   const handleIncrement = (event) => {
     event.stopPropagation()
-    addItem(data.id)
+    dispatch(addItemHandler(data))
   }
 
   const handleDecrement = (event) => {
     event.stopPropagation()
-    removeItem(data.id)
+    dispatch(removeItemHandler(data.id))
   }
 
   const handleModal = () => {
@@ -36,21 +41,21 @@ const ListItem = ({ data, addItem, removeItem }) => {
           </div>
         </div>
         {/* <button onClick={() => handleTitleUpdate(data.id)}>update title</button> */}
-        {data.quantity > 0 ? (
-          <div className="cart-addon">
-            <button onClick={handleDecrement}>
-              <span>-</span>
-            </button>
-            <span className="counter">{data.quantity}</span>
-            <button onClick={handleIncrement}>
-              <span>+</span>
-            </button>
-          </div>
-        ) : (
+        {!item || item?.quantity < 1 ? (
           <button className="cart-add" onClick={handleIncrement}>
             <span>Add to cart</span>
             <img src={AddToCartIcon} alt="" />
           </button>
+        ) : (
+          <div className="cart-addon">
+            <button onClick={handleDecrement}>
+              <span>-</span>
+            </button>
+            <span className="counter">{item.quantity}</span>
+            <button onClick={handleIncrement}>
+              <span>+</span>
+            </button>
+          </div>
         )}
       </div>
       {showModal && (
@@ -72,17 +77,7 @@ const ListItem = ({ data, addItem, removeItem }) => {
                 </small>
               </div>
               <p>{data.description}</p>
-              {data.quantity > 0 ? (
-                <div className="cart-addon cart-addon__modal">
-                  <button onClick={handleDecrement}>
-                    <span>-</span>
-                  </button>
-                  <span className="counter">{data.quantity}</span>
-                  <button onClick={handleIncrement}>
-                    <span>+</span>
-                  </button>
-                </div>
-              ) : (
+              {!item || item?.quantity < 1 ? (
                 <button
                   className="cart-add cart-add__modal"
                   onClick={handleIncrement}
@@ -90,6 +85,16 @@ const ListItem = ({ data, addItem, removeItem }) => {
                   <span>Add to cart</span>
                   <img src={AddToCartIcon} alt="" />
                 </button>
+              ) : (
+                <div className="cart-addon cart-addon__modal">
+                  <button onClick={handleDecrement}>
+                    <span>-</span>
+                  </button>
+                  <span className="counter">{item.quantity}</span>
+                  <button onClick={handleIncrement}>
+                    <span>+</span>
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -97,21 +102,6 @@ const ListItem = ({ data, addItem, removeItem }) => {
       )}
     </>
   )
-}
-
-ListItem.propTypes = {
-  data: PropTypes.shape({
-    thumbnail: PropTypes.string.isRequired,
-    discountedPrice: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    quantity: PropTypes.string.isRequired,
-  }).isRequired,
-  handleTitleUpdate: PropTypes.func,
-  addItem: PropTypes.func.isRequired,
-  removeItem: PropTypes.func.isRequired,
 }
 
 export default ListItem

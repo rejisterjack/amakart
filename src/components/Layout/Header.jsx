@@ -1,6 +1,6 @@
 import Cart from "../Cart"
 
-const Header = ({ count, items, handleEventQueue }) => {
+const Header = () => {
   return (
     <header>
       <div className="nav-brand">
@@ -71,12 +71,10 @@ const Header = ({ count, items, handleEventQueue }) => {
         </svg>
       </div>
       <div className="cart-container">
-        <Cart count={count} items={items} handleEventQueue={handleEventQueue} />
+        <Cart />
       </div>
     </header>
   )
 }
-
-
 
 export default Header
